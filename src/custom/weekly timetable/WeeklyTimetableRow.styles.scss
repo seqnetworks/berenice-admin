@@ -1,0 +1,77 @@
+@import "../../@core/scss/base/bootstrap-extended/include";
+@import "../../@core/scss/base/components/include";
+
+@mixin col {
+  color: #000;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  position: relative;
+  text-align: center;
+}
+
+@mixin none-border {
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
+@mixin more-col {
+  height: 30px;
+  text-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.first-col {
+  background-color: $primary;
+  color: #fff;
+  text-align: center;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.not-unique {
+  background-color: $primary;
+  height: 100%;
+  @include none-border();
+}
+
+.unique {
+  &-first {
+    @include none-border();
+    height: 100%;
+    background-color: $primary;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+  }
+  &-last {
+    @include none-border();
+    background-color: $primary;
+    height: 100%;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+}
+
+.other-col {
+  @include col();
+  &-triggered {
+    @include col();
+    @include more-col();
+    @include none-border();
+    &-first {
+      @include col();
+      @include more-col();
+      border-bottom: none !important;
+      overflow: hidden;
+      height: auto;
+      padding-top: 5px !important;
+    }
+    &-last {
+      @include col();
+      @include more-col();
+      border-top: none !important;
+      overflow: hidden;
+      padding-bottom: 5px !important;
+    }
+  }
+}

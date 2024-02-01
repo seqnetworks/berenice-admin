@@ -1,0 +1,62 @@
+@import "../../../../../../@core/scss/base/bootstrap-extended/include";
+@import "../../../../../../@core/scss/base/components/include";
+
+@mixin mobile {
+  background-size: cover;
+  width: 320px;
+  height: 610px;
+  position: relative;
+  margin: 0 auto;
+  margin-bottom: 15px;
+  border-radius: 20px;
+  padding-top: 200px;
+  padding-left: 23px;
+  @media (max-width: 400px) {
+    width: 280px;
+    height: 500px;
+    padding-top: 180px;
+  }
+  @media (max-width: 350px) {
+    width: 250px;
+    height: 400px;
+    padding-top: 155px;
+    padding-left: 20px;
+  }
+}
+
+@mixin slide {
+  display: flex;
+  flex-direction: column;
+  background-color: $body-bg;
+  padding: 1.5rem 1.5rem;
+  border-radius: $card-border-radius;
+  transition: transform 0.2s ease-out;
+}
+
+.final-slide {
+  text-align: center;
+  padding-bottom: 0px;
+  @include slide;
+  .img-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.preview-slide {
+  @include slide;
+  padding-bottom: 5px;
+  &-content {
+    margin-left: 10px;
+  }
+}
+
+.mobile-android {
+  background-image: url("../../../../../../assets/images/android.svg");
+  @include mobile();
+}
+.mobile-apple {
+  background-image: url("../../../../../../assets/images/apple.svg");
+  @include mobile();
+}

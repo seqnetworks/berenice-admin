@@ -1,0 +1,18 @@
+.rbc-btn-group {
+  &:last-child {
+    display: none;
+  }
+}
+
+.rbc-date-cell {
+  pointer-events: none;
+}
+
+.rbc-event-content {
+  text-align: center;
+  cursor: default;
+}
+.rbc-event,
+.rbc-selected {
+  cursor: default;
+}

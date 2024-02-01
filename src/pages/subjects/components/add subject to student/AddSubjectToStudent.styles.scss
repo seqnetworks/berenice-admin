@@ -1,0 +1,19 @@
+.adding-subject {
+  display: flex;
+  flex-direction: column;
+  &-radio {
+    display: flex;
+    align-items: center;
+    input {
+      margin-right: 10px;
+    }
+  }
+  &-checkbox {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 20px;
+    input {
+      margin-right: 10px;
+    }
+  }
+}

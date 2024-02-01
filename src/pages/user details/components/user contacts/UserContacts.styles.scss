@@ -1,0 +1,36 @@
+@import "../../../../@core/scss/base/bootstrap-extended/include";
+@import "../../../../@core/scss/base/components/include";
+.swiper-container {
+  .swiper-slide {
+    text-align: center;
+    padding: 1.5rem 2rem;
+    padding-bottom: 0px;
+    border-radius: $card-border-radius;
+    transition: transform 0.2s ease-out;
+    .img-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+.user-contacts-slide {
+  background-color: white;
+  box-shadow: $box-shadow;
+  text-align: center;
+  padding: 1.5rem 2rem;
+  padding-bottom: 0px;
+  margin-top: 10px;
+  border-radius: $card-border-radius;
+  transition: transform 0.2s ease-out;
+  .img-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &:hover {
+    transform: translateY(-10px);
+    cursor: pointer;
+  }
+}

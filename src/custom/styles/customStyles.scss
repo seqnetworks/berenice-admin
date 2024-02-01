@@ -1,0 +1,26 @@
+.objectFit {
+  object-fit: cover;
+}
+
+*::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+*::-webkit-scrollbar-track {
+  webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+*::-webkit-scrollbar-thumb {
+  background-color: #808080;
+  border-radius: 20px;
+
+  webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+.overflow-y-hidden {
+  overflow-y: hidden;
+}
+
+.btn-secondary,
+.btn-flat-secondary {
+  color: #96999c !important;
+}

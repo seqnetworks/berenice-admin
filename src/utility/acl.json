@@ -1,0 +1,50 @@
+{
+  "GET": {
+    "/berenice_auth": ["/reset_password", "/acl"],
+    "/berenice_user": [
+      "/user",
+      "/students",
+      "/student_guardians",
+      "/guardians",
+      "/guardian_sutdents",
+      "/lecturers",
+      "/all_staff"
+    ],
+    "/berenice_chat": [
+      "/chat_room",
+      "/chat_rooms",
+      "/chat_rooms_of_single_user",
+      "/messages"
+    ],
+    "/berenice_announcement": [],
+    "/berenice_assets": ["/files", "/folders"]
+  },
+  "POST": {
+    "/berenice_auth": [
+      "/login",
+      "/signup",
+      "/change_password",
+      "change_status",
+      "/refresh_token",
+      "/acl"
+    ],
+    "/berenice_user": ["/add_guardian_to_student"],
+    "/berenice_chat": ["/chat_room", "/message"],
+    "/berenice_announcement": [],
+    "/berenice_assets": ["/file", "/folder"]
+  },
+  "DELETE": {
+    "/berenice_auth": [],
+    "/berenice_user": ["/delete_guardian_of_student"],
+    "/berenice_chat": ["/chat_room"],
+    "/berenice_announcement": [],
+    "/berenice_assets": ["/file"]
+  },
+  "PUT": {
+    "/berenice_auth": [],
+    "/berenice_user": ["/user", "/staff"],
+    "/berenice_chat": [],
+    "/berenice_announcement": [],
+    "/berenice_assets": []
+  }
+}

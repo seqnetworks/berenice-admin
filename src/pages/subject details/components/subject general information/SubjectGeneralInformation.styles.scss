@@ -1,0 +1,97 @@
+@import "../../../../@core/scss/base/bootstrap-extended/include";
+@import "../../../../@core/scss/base/components/include";
+
+
+@mixin flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.assisstants {
+  align-items: flex-start !important;
+}
+.assisstant {
+  margin-bottom: 10px;
+}
+
+.subject-card,
+.attendance-sheet-card {
+  @include flex-column();
+  &-header {
+    margin-top: 5px;
+    text-transform: capitalize;
+    font-weight: 700;
+    font-size: x-large;
+    color: $primary;
+  }
+  &-sub-header {
+    @include flex-row();
+    align-items: center;
+    padding-right: 3.5rem;
+    &:not(:last-child) {
+      justify-content: space-between;
+    }
+    @include media-breakpoint-down(sm) {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+    &-block {
+      @include flex-row();
+      align-items: center;
+      @media (max-width: map-get($grid-breakpoints, sm)) {
+        flex-direction: column;
+      }
+      &-title {
+        font-weight: 700;
+        font-size: large;
+        min-width: fit-content;
+        justify-content: flex-start;
+      }
+      &-content {
+        display: flex;
+        flex-wrap: wrap;
+        &-assisstant {
+          color: white;
+          min-width: fit-content;
+          background-color: $primary;
+          border-radius: 20px;
+          padding: 7px 10px;
+          transition: all 0.2s;
+          margin: 0 5px 5px;
+          position: relative;
+          cursor: default;
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 3px rgba(black, 0.5);
+            @include media-breakpoint-down(sm) {
+              transform: none;
+              box-shadow: none;
+            }
+          }
+          &:hover > &-button {
+            opacity: 1;
+          }
+          &-button {
+            cursor: pointer;
+            position: absolute;
+            opacity: 0;
+            top: -2px;
+            left: -2px;
+            border-radius: 50%;
+            background-color: $danger;
+            transition: all 0.3s;
+            @media (max-width: (map-get($grid-breakpoints, sm))) {
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+}

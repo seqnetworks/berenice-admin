@@ -1,0 +1,42 @@
+@import "../../../../@core/scss/base/bootstrap-extended/include";
+@import "../../../../@core/scss/base/components/include";
+
+.header-container {
+  display: flex;
+  flex-direction: row;
+  .image-container {
+    height: 11rem;
+    width: 11rem;
+    position: relative;
+    margin-right: 25px;
+    img {
+      border: 5px solid $primary;
+      border-radius: 50%;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+    .edit-button {
+      border-radius: 50%;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      z-index: 1000;
+    }
+  }
+  .info-container {
+    display: flex;
+    flex-direction: column;
+    .name {
+      margin-top: 5px;
+      font-size: 3rem;
+      text-transform: capitalize;
+      font-weight: 700;
+    }
+    .role {
+      font-size: 1.5rem;
+      text-transform: capitalize;
+      font-weight: 400;
+    }
+  }
+}
