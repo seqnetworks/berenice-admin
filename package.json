@@ -139,11 +139,6 @@
     "react-app-rewired": "^2.1.6",
     "sass-loader": "^8.0.2"
   },
-
-  "engines": {
-    "node": "16.x" // Use the appropriate version
-  },
-  
   "browserslist": {
     "production": [
       ">0.2%",
