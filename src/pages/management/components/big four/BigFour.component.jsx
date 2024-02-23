@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import { useIntl } from "react-intl"
@@ -64,6 +64,13 @@ const BigFour = ({
   getLecturersErrorMessage,
   getLecturersIsLoading,
 }) => {
+  useEffect(() => {
+    getAllDepartmentsUseEffect(departments)
+    getAllCoursesUseEffect(courses)
+    getAllIntakesUseEffect(intakes)
+    getAllSubjectsUseEffect(subjects)
+  }, []);
+
   const [activeTab, setActiveTab] = useState(0)
 
   const intl = useIntl()
@@ -78,8 +85,6 @@ const BigFour = ({
       },
       content: (
         <DepartmentsTableWithSpinner
-          toBeDispatchedUseEffect={getAllDepartmentsUseEffect}
-          toBeDispatchedPropsUseEffect={departments}
           toBeDispatchedTryAgain={getAllDepartmentsTryAgain}
           errorMessage={getAllDepartmentsErrorMessage}
           isLoading={getAllDepartmentsIsLoading}
@@ -95,8 +100,6 @@ const BigFour = ({
       },
       content: (
         <CoursesTableWithSpinner
-          toBeDispatchedUseEffect={getAllCoursesUseEffect}
-          toBeDispatchedPropsUseEffect={courses}
           toBeDispatchedTryAgain={getAllCoursesTryAgain}
           errorMessage={getAllCoursesErrorMessage}
           isLoading={getAllCoursesIsLoading}
@@ -112,8 +115,6 @@ const BigFour = ({
       },
       content: (
         <IntakesTableWithSpinner
-          toBeDispatchedUseEffect={getAllIntakesUseEffect}
-          toBeDispatchedPropsUseEffect={intakes}
           toBeDispatchedTryAgain={getAllIntakesTryAgain}
           errorMessage={getAllIntakesErrorMessage}
           isLoading={getAllIntakesIsLoading}
@@ -129,8 +130,6 @@ const BigFour = ({
       },
       content: (
         <SubjectsTableWithSpinner
-          toBeDispatchedUseEffect={getAllSubjectsUseEffect}
-          toBeDispatchedPropsUseEffect={subjects}
           toBeDispatchedTryAgain={getAllSubjectsTryAgain}
           errorMessage={getAllSubjectsErrorMessage}
           isLoading={

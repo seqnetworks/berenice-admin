@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import { useIntl } from "react-intl"
@@ -49,6 +49,13 @@ const SubjectDetails = ({
   getStudentsAttendancesInSubjectErrorMessage,
   getStudentsAttendancesInSubjectIsLoading,
 }) => {
+  useEffect(() => {
+    getAllStudentsInClass(selectedSubject.lecturerSubjectUuid)
+    getAllAssessmentsOfSubjectForLecturer(selectedSubject.lecturerSubjectUuid)
+    getAllAttendanceSheetsInClass(selectedSubject.lecturerSubjectUuid)
+    getStudentsAttendancesInSubject(selectedSubject.lecturerSubjectUuid)
+  }, []);
+
   const [activeTab, setActiveTab] = useState(0)
 
   const intl = useIntl()
@@ -73,8 +80,6 @@ const SubjectDetails = ({
         <SubjectStudentsTableWithSpinner
           errorMessage={getAllStudentsInClassErrorMessage}
           isLoading={getAllStudentsInClassIsLoading}
-          toBeDispatchedUseEffect={getAllStudentsInClass}
-          toBeDispatchedPropsUseEffect={selectedSubject.lecturerSubjectUuid}
           toBeDispatchedTryAgain={getAllStudentsInClass}
           toBeDispatchedPropsTryAgain={selectedSubject.lecturerSubjectUuid}
         />
@@ -99,11 +104,6 @@ const SubjectDetails = ({
             getAllAttendanceSheetsInClassIsLoading ||
             getStudentsAttendancesInSubjectIsLoading
           }
-          toBeDispatchedUseEffect={lecturerSubjectUuid => {
-            getAllAttendanceSheetsInClass(lecturerSubjectUuid)
-            getStudentsAttendancesInSubject(lecturerSubjectUuid)
-          }}
-          toBeDispatchedPropsUseEffect={selectedSubject.lecturerSubjectUuid}
           toBeDispatchedTryAgain={lecturerSubjectUuid => {
             getAllAttendanceSheetsInClass(lecturerSubjectUuid)
             getStudentsAttendancesInSubject(lecturerSubjectUuid)
@@ -122,8 +122,6 @@ const SubjectDetails = ({
         <SubjectAssessmentsTableWithSpinner
           errorMessage={getAllAssessmentsOfSubjectForLecturerErrorMessage}
           isLoading={getAllAssessmentsOfSubjectForLecturerIsLoading}
-          toBeDispatchedUseEffect={getAllAssessmentsOfSubjectForLecturer}
-          toBeDispatchedPropsUseEffect={selectedSubject.lecturerSubjectUuid}
           toBeDispatchedTryAgain={getAllAssessmentsOfSubjectForLecturer}
           toBeDispatchedPropsTryAgain={selectedSubject.lecturerSubjectUuid}
         />

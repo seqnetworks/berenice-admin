@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import LecturerTimetableComponent from "./components/lecturer timtable/LecturerTimetable.component"
@@ -23,15 +23,15 @@ const LecturerTimetable = ({
   getAllClassesOfLecturerErrorMessage,
   getAllClassesOfLecturerIsLoading,
 }) => {
+  useEffect(() => {
+    getAllClassesOfLecturer(currentUserRole === "lecturer" ? null : selectedUserUuid)
+  }, []);
+
   return (
     <LecturerTimetableComponentWithSpinner
       card={true}
-      toBeDispatchedUseEffect={getAllClassesOfLecturer}
       toBeDispatchedTryAgain={getAllClassesOfLecturer}
       toBeDispatchedPropsTryAgain={
-        currentUserRole === "lecturer" ? null : selectedUserUuid
-      }
-      toBeDispatchedPropsUseEffect={
         currentUserRole === "lecturer" ? null : selectedUserUuid
       }
       errorMessage={getAllClassesOfLecturerErrorMessage}

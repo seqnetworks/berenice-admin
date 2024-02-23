@@ -12,8 +12,8 @@ import { AbilityContext } from '../../../../../utility/context/Can'
 // ** Utils
 import {
   resolveVerticalNavMenuItemComponent as resolveNavItemComponent,
-  canViewMenuGroup,
-  canViewMenuItem
+  CanViewMenuGroup,
+  CanViewMenuItem
 } from '../../../../../@core/layouts/utils'
 
 const VerticalMenuNavItems = props => {
@@ -31,9 +31,9 @@ const VerticalMenuNavItems = props => {
   const RenderNavItems = props.items.map((item, index) => {
     const TagName = Components[resolveNavItemComponent(item)]
     if (item.children) {
-      return canViewMenuGroup(item) && <TagName item={item} index={index} key={item.id} {...props} />
+      return CanViewMenuGroup(item) && <TagName item={item} index={index} key={item.id} {...props} />
     }
-    return canViewMenuItem(item) && <TagName key={item.id || item.header} item={item} {...props} />
+    return CanViewMenuItem(item) && <TagName key={item.id || item.header} item={item} {...props} />
   })
 
   return RenderNavItems

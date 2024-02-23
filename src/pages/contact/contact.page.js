@@ -64,6 +64,17 @@ const ContactPage = ({
 }) => {
   const ability = useContext(AbilityContext)
 
+  useEffect(() => {
+    if (ability.can("manage", "announcements-GET")) {
+      getAllAnnouncements()
+    } else if(ability.can("manage", "follow_ups-GET")) {
+      allFollowUpsToBeDispatched()
+    } else if(!ability.can("manage", "announcement-POST") &&
+    !ability.can("manage", "notification-POST")) {
+      SendNotificationOrAnnouncementToBeDispatched()
+    }
+  }, []);
+
   const SendNotificationOrAnnouncementToBeDispatched = () => {
     getAllUsers()
     getAllIntakes()
@@ -90,9 +101,6 @@ const ContactPage = ({
                 getAllIntakesIsLoading ||
                 getAllSubjectsWithLecturerIsLoading
               }
-              toBeDispatchedUseEffect={
-                SendNotificationOrAnnouncementToBeDispatched
-              }
               toBeDispatchedTryAgain={
                 SendNotificationOrAnnouncementToBeDispatched
               }
@@ -106,7 +114,6 @@ const ContactPage = ({
             <AllAnnouncementsTableWithSpinner
               errorMessage={getAllAnnouncementsErrorMessage}
               isLoading={getAllAnnouncementsIsLoading}
-              toBeDispatchedUseEffect={getAllAnnouncements}
               toBeDispatchedTryAgain={getAllAnnouncements}
             />
           </Card>
@@ -126,7 +133,6 @@ const ContactPage = ({
                 getStudentsIsLoading ||
                 getGuardiansIsLoading
               }
-              toBeDispatchedUseEffect={allFollowUpsToBeDispatched}
               toBeDispatchedTryAgain={allFollowUpsToBeDispatched}
             />
           </Card>

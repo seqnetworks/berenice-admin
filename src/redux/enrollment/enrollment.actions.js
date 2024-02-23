@@ -200,6 +200,8 @@ export const editIntakeSubjectFailure = errorMessage => ({
   payload: errorMessage,
 })
 
+
+
 export const editIntakeSubjectAsync = (
   requestBody,
   subjectIntakeUuid,
@@ -222,6 +224,11 @@ export const editIntakeSubjectAsync = (
     dispatch(editIntakeSubjectFailure(error.message))
   }
 }
+
+
+
+
+
 //--------DELETE INTAKE SUBJECT--------
 export const deleteIntakeSubjectStart = () => ({
   type: enrollmentTypes.DELETE_INTAKE_SUBJECT_START,
@@ -356,7 +363,8 @@ export const removeSubjectFromLecturerFailure = errorMessage => ({
 
 export const removeSubjectFromLecturerAsync = (
   lecturerSubjectUuid,
-  lecturerUuid
+  lecturerUuid,
+  messages
 ) => async dispatch => {
   try {
     dispatch(removeSubjectFromLecturerStart())
@@ -446,7 +454,7 @@ export const removeSubjectFromIntakeFailure = errorMessage => ({
   payload: errorMessage,
 })
 
-export const removeSubjectFromIntakeAsync = intakeSubjectUuid => async dispatch => {
+export const removeSubjectFromIntakeAsync = (IntakeCode, messages ,intakeSubjectUuid)  => async dispatch => {
   try {
     dispatch(removeSubjectFromIntakeStart())
     await req.delete("/berenice_enrollment/remove_subject_Intake", {
@@ -808,7 +816,7 @@ export const removeSubjectFromStudentFailure = errorMessage => ({
   payload: errorMessage,
 })
 
-export const removeSubjectFromStudentAsync = studentSubjectUuid => async dispatch => {
+export const removeSubjectFromStudentAsync = (messages ,studentSubjectUuid)  => async dispatch => {
   try {
     dispatch(removeSubjectFromStudentStart())
     await req.delete("/berenice_enrollment/remove_subject_student", {
@@ -1226,7 +1234,8 @@ export const removeStudentFromIntakeFailure = errorMessage => ({
 
 export const removeStudentFromIntakeAsync = (
   studentUuid,
-  intakeCode
+  intakeCode,
+  messages
 ) => async dispatch => {
   try {
     dispatch(removeStudentFromIntakeStart())

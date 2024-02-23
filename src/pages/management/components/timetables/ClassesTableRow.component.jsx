@@ -107,6 +107,10 @@ const ClassesTableRow = ({
   getAvailableLecturersForClassErrorMessage,
   getAvailableLecturersForClassIsLoading,
 }) => {
+  useEffect(() => {
+    getAvailableLecturersForClass(oneClass.uuid)
+  }, []);
+
   const intl = useIntl()
   const ability = useContext(AbilityContext)
   const [rtl] = useRTL()
@@ -259,8 +263,6 @@ const ClassesTableRow = ({
         <UpdateClassWithSpinner
           errorMessage={getAvailableLecturersForClassErrorMessage}
           isLoading={getAvailableLecturersForClassIsLoading}
-          toBeDispatchedUseEffect={getAvailableLecturersForClass}
-          toBeDispatchedPropsUseEffect={oneClass.uuid}
           toBeDispatchedTryAgain={getAvailableLecturersForClass}
           toBeDispatchedPropsTryAgain={oneClass.uuid}
           formik={updateClassFormik}

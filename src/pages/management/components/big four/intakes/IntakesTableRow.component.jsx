@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import { Spinner, Badge, CardBody, Card } from "reactstrap"
@@ -59,6 +59,11 @@ const IntakesTableRow = ({
   getAllSubjectsInSingleIntakeErrorMessage,
   getAllSubjectsInSingleIntakeIsLoading,
 }) => {
+  useEffect(() => {
+    getAllSubjectsInSingleIntake(intake.code)
+    getLecturers()
+  }, []);
+
   const intl = useIntl()
   const ability = useContext(AbilityContext)
 
@@ -345,15 +350,10 @@ const IntakesTableRow = ({
               intakeCode={intake.code}
               errorMessage={getAllSubjectsInSingleIntakeErrorMessage}
               isLoading={getAllSubjectsInSingleIntakeIsLoading}
-              toBeDispatchedUseEffect={intakeCode => {
-                getAllSubjectsInSingleIntake(intakeCode)
-                getLecturers()
-              }}
               toBeDispatchedTryAgain={intakeCode => {
                 getAllSubjectsInSingleIntake(intakeCode)
                 getLecturers()
               }}
-              toBeDispatchedPropsUseEffect={intake.code}
               toBeDispatchedPropsTryAgain={intake.code}
             />
           </CardBody>

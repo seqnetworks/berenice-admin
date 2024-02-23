@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import { Row, Col } from "reactstrap"
@@ -24,6 +24,10 @@ const AssessmentPage = ({
   getAllStudentsMarksInSubjectErrorMessage,
   getAllStudentsMarksInSubjectIsLoading,
 }) => {
+  useEffect(() => {
+    getAllStudentsMarksInSubject(info.uuid)
+  }, []);
+
   return (
     <Row>
       <BackButton messageId="BACK.TO.SUBJECT" />
@@ -35,8 +39,6 @@ const AssessmentPage = ({
           card={true}
           errorMessage={getAllStudentsMarksInSubjectErrorMessage}
           isLoading={getAllStudentsMarksInSubjectIsLoading}
-          toBeDispatchedUseEffect={getAllStudentsMarksInSubject}
-          toBeDispatchedPropsUseEffect={info.uuid}
           toBeDispatchedTryAgain={getAllStudentsMarksInSubject}
           toBeDispatchedPropsTryAgain={info.uuid}
         />

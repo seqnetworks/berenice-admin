@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import LecturerSubjects from "./components/lecturer subjects/LecturerSubjects.component"
@@ -23,6 +23,10 @@ const LecturerSubjectsPage = ({
 }) => {
   const ability = useContext(AbilityContext)
 
+  useEffect(() => {
+    getAllSubjectsOfLecturer(currentUserRole === "lecturer" ? null : selectedUserUuid);
+  }, []);
+  
   return (
     ability.can("manage", "get_all_subjects_of_lecturer-GET") && (
       <LecturerSubjectsWithSpinner
@@ -30,10 +34,6 @@ const LecturerSubjectsPage = ({
         toBeDispatchedPropsTryAgain={
           currentUserRole === "lecturer" ? null : selectedUserUuid
         }
-        toBeDispatchedPropsUseEffect={
-          currentUserRole === "lecturer" ? null : selectedUserUuid
-        }
-        toBeDispatchedUseEffect={getAllSubjectsOfLecturer}
         toBeDispatchedTryAgain={getAllSubjectsOfLecturer}
         errorMessage={getAllSubjectsOfLecturerErrorMessage}
         isLoading={getAllSubjectsOfLecturerIsLoading}

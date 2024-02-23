@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import { Row, Col, Card, CardBody } from "reactstrap"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
@@ -38,6 +38,10 @@ const FilesPage = ({
 }) => {
   const ability = useContext(AbilityContext)
 
+  useEffect(() => {
+    toBeDispatched()
+  }, []);
+
   const toBeDispatched = () => {
     getCourseMaterials()
     currentUserRole === "staff"
@@ -75,7 +79,6 @@ const FilesPage = ({
                     ? getSubjectsIsLoading
                     : getCurrentLecturerOngoingSubjectsIsLoading)
                 }
-                toBeDispatchedUseEffect={toBeDispatched}
                 toBeDispatchedTryAgain={toBeDispatched}
               />
             </CardBody>

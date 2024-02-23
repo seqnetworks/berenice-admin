@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import { useIntl } from "react-intl"
@@ -39,6 +39,11 @@ const HomeAssetsAndEFormsContainer = ({
 }) => {
   const [activeTab, setActiveTab] = useState(0)
 
+  useEffect(() => {
+    getHomeAssetsUseEffect(homeAssets)
+    getEFormsUseEffect(eForms)
+  }, []);
+
   const intl = useIntl()
   const ability = useContext(AbilityContext)
 
@@ -51,8 +56,6 @@ const HomeAssetsAndEFormsContainer = ({
       },
       content: (
         <HomeAssetsTableWithSpinner
-          toBeDispatchedUseEffect={getHomeAssetsUseEffect}
-          toBeDispatchedPropsUseEffect={homeAssets}
           toBeDispatchedTryAgain={getHomeAssetsTryAgain}
           errorMessage={getHomeAssetsErrorMessage}
           isLoading={getHomeAssetsIsLoading}
@@ -67,8 +70,6 @@ const HomeAssetsAndEFormsContainer = ({
       },
       content: (
         <EFormsTableWithSpinner
-          toBeDispatchedUseEffect={getEFormsUseEffect}
-          toBeDispatchedPropsUseEffect={eForms}
           toBeDispatchedTryAgain={getEFormsTryAgain}
           errorMessage={getEFormsErrorMessage}
           isLoading={getEFormsIsLoading}

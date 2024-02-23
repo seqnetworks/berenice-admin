@@ -10,7 +10,7 @@ import {
   InputGroupText,
   Input,
 } from "reactstrap"
-import { Edit } from "react-feather"
+import { Edit, Percent } from "react-feather"
 import { useIntl, FormattedMessage } from "react-intl"
 import { useRTL } from "../../../../../utility/hooks/useRTL"
 import Dialog from "../../../../../custom/dialog/dialog.component"

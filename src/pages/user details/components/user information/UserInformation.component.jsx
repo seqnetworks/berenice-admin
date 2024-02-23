@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import { useIntl } from "react-intl"
@@ -42,7 +42,6 @@ const GeneralInformationWithSpinner = WithSpinner(GeneralInformation)
 const StudentIntakeWithSpinner = WithSpinner(StudentIntake)
 const ActionsWithSpinner = WithSpinner(Actions)
 const EditPermissionsWithSpinner = WithSpinner(EditPermissions)
-const ChangePasswordWithSpinner = WithSpinner(ChangePassword)
 //-------------------------------------
 const UserInformation = ({
   getUser,
@@ -62,6 +61,14 @@ const UserInformation = ({
   getSelectedUserIntakesErrorMessage,
   getSelectedUserIntakesIsLoading,
 }) => {
+  useEffect(() => {
+    getUser(currentUserRole === "lecturer"
+          ? { ...paramAndType, lecturer: true }
+          : paramAndType)
+    getSelectedUserIntakes(paramAndType.param)
+    getUserAcl(userUuid)
+  }, []);
+
   const [activeTab, setActiveTab] = useState(0)
   const [tabsDisabled, setTabsDisabled] = useState(false)
 
@@ -86,12 +93,6 @@ const UserInformation = ({
               ? { ...paramAndType, lecturer: true }
               : paramAndType
           }
-          toBeDispatchedUseEffect={getUser}
-          toBeDispatchedPropsUseEffect={
-            currentUserRole === "lecturer"
-              ? { ...paramAndType, lecturer: true }
-              : paramAndType
-          }
           isLoading={getUserIsLoading}
           errorMessage={getUserErrorMessage}
           setTabsDisabled={setTabsDisabled}
@@ -110,8 +111,6 @@ const UserInformation = ({
       content: (
         <StudentIntakeWithSpinner
           studentUuid={paramAndType.param}
-          toBeDispatchedUseEffect={getSelectedUserIntakes}
-          toBeDispatchedPropsUseEffect={paramAndType.param}
           toBeDispatchedTryAgain={getSelectedUserIntakes}
           toBeDispatchedPropsTryAgain={paramAndType.param}
           isLoading={getSelectedUserIntakesIsLoading}
@@ -149,8 +148,6 @@ const UserInformation = ({
         <EditPermissionsWithSpinner
           toBeDispatchedTryAgain={getUserAcl}
           toBeDispatchedPropsTryAgain={userUuid}
-          toBeDispatchedUseEffect={getUserAcl}
-          toBeDispatchedPropsUseEffect={userUuid}
           isLoading={getUserAclIsLoading}
           errorMessage={getUserAclErrorMessage}
           uuid={userUuid}

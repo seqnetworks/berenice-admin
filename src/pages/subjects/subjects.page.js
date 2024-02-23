@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import { Row, Col, Card, CardBody } from "reactstrap"
@@ -37,6 +37,11 @@ const SubjectsPage = ({
   getAllSubjectsWithIntakesErrorMessage,
   getAllSubjectsWithIntakesIsLoading,
 }) => {
+  useEffect(() => {
+    getAllSubjectsThatStudentCanEnrollTo(selectedUserUuid)
+    getAllSubjectsWithIntakes()
+  }, []);
+
   const [rtl] = useRTL()
   const intl = useIntl()
   const ability = useContext(AbilityContext)
@@ -68,12 +73,7 @@ const SubjectsPage = ({
                   getAllSubjectsThatStudentCanEnrollTo(selectedUserUuid)
                   getAllSubjectsWithIntakes()
                 }}
-                toBeDispatchedUseEffect={selectedUserUuid => {
-                  getAllSubjectsThatStudentCanEnrollTo(selectedUserUuid)
-                  getAllSubjectsWithIntakes()
-                }}
                 toBeDispatchedPropsTryAgain={selectedUserUuid}
-                toBeDispatchedPropsUseEffect={selectedUserUuid}
                 errorMessage={
                   getAllSubjectsThatStudentCanEnrollToErrorMessage ||
                   getAllSubjectsWithIntakesErrorMessage

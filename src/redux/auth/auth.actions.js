@@ -54,7 +54,7 @@ export const logInAsync = credentials => {
         })
         await dispatch(getCurrentUserAclSuccess(rules))
         await dispatch(logInSuccess(res.data, info.data))
-        window.setTimeout(() => location.reload(), 0.001)
+        window.setTimeout(() => window.location.reload(), 0.001)
       } else dispatch(logInFailure("not admin"))
     } catch (error) {
       dispatch(logInFailure(error.message))

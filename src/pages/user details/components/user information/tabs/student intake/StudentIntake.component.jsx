@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import { useIntl } from "react-intl"
@@ -21,6 +21,10 @@ const StudentIntake = ({
   getStudentCgpaErrorMessage,
   getStudentCgpaIsLoading,
 }) => {
+  useEffect(() => {
+    getStudentCgpa(studentUuid)
+  }, []);
+
   const [activeTab, setActiveTab] = useState(0)
 
   const intl = useIntl()
@@ -38,8 +42,6 @@ const StudentIntake = ({
           <IntakeManagmentWithSpinner
             errorMessage={getStudentCgpaErrorMessage}
             isLoading={getStudentCgpaIsLoading}
-            toBeDispatchedUseEffect={getStudentCgpa}
-            toBeDispatchedPropsUseEffect={studentUuid}
             toBeDispatchedTryAgain={getStudentCgpa}
             toBeDispatchedPropsTryAgain={studentUuid}
           />

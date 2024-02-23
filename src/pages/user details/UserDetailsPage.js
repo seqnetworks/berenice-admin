@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import { Row, Col } from "reactstrap"
 import { connect } from "react-redux"
 import { useLocation } from "react-router-dom"
@@ -53,6 +53,22 @@ const UserDetailsPage = ({
   const location = useLocation()
   const intl = useIntl()
   const ability = useContext(AbilityContext)
+
+  useEffect(() => {
+    if (selectedUserRole === "student" &&
+      ability.can(
+        "manage",
+        "consultations_single_student_uuid-GET"
+      )) {
+      getSelectedUserConsultations(selectedUserRole === "lecturer"
+        ? { lecturerUuid: selectedUserUuid }
+        : { studentUuid: selectedUserUuid })
+    } else if (selectedUserRole === "guardian") {
+      getFollowUpsOfSingalUser({
+        receiverUuid: selectedUserUserUuid,
+      })
+    }
+  }, []);
 
   const paramAndType = location.state
     ? location.state.paramAndType
@@ -130,10 +146,10 @@ const UserDetailsPage = ({
             {getUserErrorMessage || getUserIsLoading ? (
               <></>
             ) : (selectedUserRole === "lecturer" &&
-                ability.can(
-                  "manage",
-                  "consultations_single_lecturer_uuid-GET"
-                )) ||
+              ability.can(
+                "manage",
+                "consultations_single_lecturer_uuid-GET"
+              )) ||
               (selectedUserRole === "student" &&
                 ability.can(
                   "manage",
@@ -149,14 +165,8 @@ const UserDetailsPage = ({
                   errorMessage={getSelectedUserConsultationsErrorMessage}
                   isLoading={getSelectedUserConsultationsIsLoading}
                   card={true}
-                  toBeDispatchedUseEffect={getSelectedUserConsultations}
                   toBeDispatchedTryAgain={getSelectedUserConsultations}
                   toBeDispatchedPropsTryAgain={
-                    selectedUserRole === "lecturer"
-                      ? { lecturerUuid: selectedUserUuid }
-                      : { studentUuid: selectedUserUuid }
-                  }
-                  toBeDispatchedPropsUseEffect={
                     selectedUserRole === "lecturer"
                       ? { lecturerUuid: selectedUserUuid }
                       : { studentUuid: selectedUserUuid }
@@ -176,10 +186,6 @@ const UserDetailsPage = ({
             ) : selectedUserRole === "guardian" ? (
               <UserFollowUpsTableWithSpinner
                 card={true}
-                toBeDispatchedUseEffect={getFollowUpsOfSingalUser}
-                toBeDispatchedPropsUseEffect={{
-                  receiverUuid: selectedUserUserUuid,
-                }}
                 toBeDispatchedTryAgain={getFollowUpsOfSingalUser}
                 toBeDispatchedPropsTryAgain={{
                   receiverUuid: selectedUserUserUuid,

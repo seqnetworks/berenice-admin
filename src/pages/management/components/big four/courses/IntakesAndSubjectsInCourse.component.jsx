@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import { useIntl } from "react-intl"
@@ -40,6 +40,19 @@ const IntakesAndSubjectsInCourse = ({
   getAllIntakesInCourseErrorMessage,
   getAllIntakesInCourseIsLoading,
 }) => {
+  useEffect(() => {
+    getAllSubjectsInCourseUseEffect({
+      courseCode,
+      selectedCourse,
+      selectedCourseSubjects,
+    })
+    getAllIntakesInCourseUseEffect({
+      courseCode,
+      selectedCourse,
+      selectedCourseIntakes,
+    })
+  }, []);
+
   const [activeTab, setActiveTab] = useState(0)
 
   const intl = useIntl()
@@ -56,12 +69,6 @@ const IntakesAndSubjectsInCourse = ({
         <SubjectsInCourseTableWithSpinner
           courseCode={courseCode}
           subjects={selectedCourseSubjects}
-          toBeDispatchedUseEffect={getAllSubjectsInCourseUseEffect}
-          toBeDispatchedPropsUseEffect={{
-            courseCode,
-            selectedCourse,
-            selectedCourseSubjects,
-          }}
           toBeDispatchedTryAgain={getAllSubjectsInCourseTryAgain}
           toBeDispatchedPropsTryAgain={courseCode}
           errorMessage={getAllSubjectsInCourseErrorMessage}
@@ -80,12 +87,6 @@ const IntakesAndSubjectsInCourse = ({
         <IntakesInCourseTableWithSpinner
           courseCode={courseCode}
           intakes={selectedCourseIntakes}
-          toBeDispatchedUseEffect={getAllIntakesInCourseUseEffect}
-          toBeDispatchedPropsUseEffect={{
-            courseCode,
-            selectedCourse,
-            selectedCourseIntakes,
-          }}
           toBeDispatchedTryAgain={getAllIntakesInCourseTryAgain}
           toBeDispatchedPropsTryAgain={courseCode}
           errorMessage={getAllIntakesInCourseErrorMessage}

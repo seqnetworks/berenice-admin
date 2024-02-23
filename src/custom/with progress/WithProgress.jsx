@@ -3,7 +3,7 @@ import { LinearProgress } from "@material-ui/core"
 import TryAgain from "../try again/TryAgain.component"
 import { CardBody } from "reactstrap"
 
-const WithSpinner = WrappedComponent => ({
+const WithProgress = WrappedComponent => ({
 	isLoading,
 	errorMessage,
 	toBeDispatchedUseEffect,
@@ -35,4 +35,4 @@ const WithSpinner = WrappedComponent => ({
 		<WrappedComponent {...otherProps} />
 	)
 }
-export default WithSpinner
+export default WithProgress

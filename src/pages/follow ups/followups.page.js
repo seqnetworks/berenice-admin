@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import { Card, CardBody } from "reactstrap"
@@ -40,6 +40,17 @@ const FollowUpsPage = ({
 }) => {
   const intl = useIntl()
 
+  useEffect(() => {
+    if (currentUserRole === "lecturer") {
+      toBeDispatched({ userUuid: selectedUserUserUuid })
+    } else if(selectedUserUuid &&
+      (selectedUserRole === "staff" || selectedUserRole === "lecturer")) {
+      toBeDispatched({ userUuid: selectedUserUserUuid })
+    } else if(selectedUserUserUuid && selectedUserRole === "student") {
+      toBeDispatched({ receiverUuid: selectedUserUserUuid })
+    }
+  }, []);
+
   const toBeDispatched = requestBody => {
     getFollowUpsOfSingalUser(requestBody)
     getStudents()
@@ -48,8 +59,6 @@ const FollowUpsPage = ({
   return currentUserRole === "lecturer" ? (
     <UserFollowUpsTableWithSpinner
       card={true}
-      toBeDispatchedUseEffect={toBeDispatched}
-      toBeDispatchedPropsUseEffect={{ userUuid: selectedUserUserUuid }}
       toBeDispatchedTryAgain={toBeDispatched}
       toBeDispatchedPropsTryAgain={{ userUuid: selectedUserUserUuid }}
       isLoading={getFollowUpsOfSingalUserIsLoading || getStudentsIsLoading}
@@ -64,8 +73,6 @@ const FollowUpsPage = ({
       <BackButton messageId="BACK.TO.PROFILE" />
       <UserFollowUpsTableWithSpinner
         card={true}
-        toBeDispatchedUseEffect={toBeDispatched}
-        toBeDispatchedPropsUseEffect={{ userUuid: selectedUserUserUuid }}
         toBeDispatchedTryAgain={toBeDispatched}
         toBeDispatchedPropsTryAgain={{ userUuid: selectedUserUserUuid }}
         isLoading={getFollowUpsOfSingalUserIsLoading || getStudentsIsLoading}
@@ -80,8 +87,6 @@ const FollowUpsPage = ({
       <BackButton messageId="BACK.TO.PROFILE" />
       <UserFollowUpsTableWithSpinner
         card={true}
-        toBeDispatchedUseEffect={toBeDispatched}
-        toBeDispatchedPropsUseEffect={{ receiverUuid: selectedUserUserUuid }}
         toBeDispatchedTryAgain={toBeDispatched}
         toBeDispatchedPropsTryAgain={{ receiverUuid: selectedUserUserUuid }}
         isLoading={getFollowUpsOfSingalUserIsLoading || getStudentsIsLoading}

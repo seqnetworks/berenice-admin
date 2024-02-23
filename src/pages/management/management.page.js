@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import { Row, Col, Card, CardBody } from "reactstrap"
@@ -21,6 +21,9 @@ const ManagementPage = ({
   getAllSubjectsWithLecturerErrorMessage,
   getAllSubjectsWithLecturerIsLoading,
 }) => {
+  useEffect(() => {
+    getAllSubjectsWithLecturer()
+  }, []);
   const ability = useContext(AbilityContext)
 
   return (
@@ -56,7 +59,6 @@ const ManagementPage = ({
                 errorMessage={getAllSubjectsWithLecturerErrorMessage}
                 isLoading={getAllSubjectsWithLecturerIsLoading}
                 toBeDispatchedTryAgain={getAllSubjectsWithLecturer}
-                toBeDispatchedUseEffect={getAllSubjectsWithLecturer}
               />
             </CardBody>
           </Card>

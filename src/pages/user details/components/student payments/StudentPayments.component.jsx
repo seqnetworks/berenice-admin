@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import { useIntl } from "react-intl"
@@ -37,6 +37,11 @@ const StudentPayments = ({
   getAllSubjectsOfSingleStudentErrorMessage,
   getAllSubjectsOfSingleStudentIsLoading,
 }) => {
+  useEffect(() => {
+    getStudentPayments(selectedUserUuid)
+    getAllSubjectsOfSingleStudent(selectedUserUuid)
+  }, []);
+
   const [activeTab, setActiveTab] = useState(0)
 
   const intl = useIntl()
@@ -54,10 +59,8 @@ const StudentPayments = ({
             studentUuid={selectedUserUuid}
             isLoading={getStudentPaymentsIsLoading}
             errorMessage={getStudentPaymentsErrorMessage}
-            toBeDispatchedUseEffect={getStudentPayments}
             toBeDispatchedTryAgain={getStudentPayments}
             toBeDispatchedPropsTryAgain={selectedUserUuid}
-            toBeDispatchedPropsUseEffect={selectedUserUuid}
           />
         ),
       },
@@ -74,8 +77,6 @@ const StudentPayments = ({
             isLoading={getAllSubjectsOfSingleStudentIsLoading}
             toBeDispatchedTryAgain={getAllSubjectsOfSingleStudent}
             toBeDispatchedPropsTryAgain={selectedUserUuid}
-            toBeDispatchedUseEffect={getAllSubjectsOfSingleStudent}
-            toBeDispatchedPropsUseEffect={selectedUserUuid}
           />
         ),
       },

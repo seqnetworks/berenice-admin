@@ -140,7 +140,7 @@ export const getAllParents = (obj, match) => {
   return res
 }
 
-export const canViewMenuGroup = item => {
+export const CanViewMenuGroup = item => {
   const ability = useContext(AbilityContext)
   // ! This same logic is used in canViewHorizontalNavMenuGroup and canViewHorizontalNavMenuHeaderGroup. So make sure to update logic in them as well
   const hasAnyVisibleChild = item.children && item.children.some(i => ability.can(i.action, i.resource))
@@ -153,7 +153,7 @@ export const canViewMenuGroup = item => {
   return ability.can(item.action, item.resource) && hasAnyVisibleChild
 }
 
-export const canViewMenuItem = item => {
+export const CanViewMenuItem = item => {
   const ability = useContext(AbilityContext)
   return ability.can(item.action, item.resource)
 }

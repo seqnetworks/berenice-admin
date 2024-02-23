@@ -112,7 +112,7 @@ const Login = ({
                   autoClose: 2500,
                 })
               : null}
-            {actionDone && !loginErrorMessage ? location.reload() : null}
+            {actionDone && !loginErrorMessage ? window.location.reload() : null}
             {actionDone && !loginErrorMessage ? <Redirect to="/" /> : null}
             {loginErrorMessage ? (
               loginErrorMessage === "not admin" ? (

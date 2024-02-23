@@ -46,7 +46,6 @@
     "leaflet": "1.6.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
-    "node-sass": "4.14.1",
     "nouislider": "14.6.2",
     "nouislider-react": "3.3.8",
     "postcss-rtl": "1.5.0",
@@ -127,6 +126,7 @@
     "extends": "react-app"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/sortablejs": "^1.10.6",
     "eslint": "^7.8.0",
     "eslint-config-prettier": "^8.1.0",

@@ -1,9 +1,8 @@
-import React, { useEffect, useContext } from "react"
+import React, { useEffect } from "react"
 import { connect } from "react-redux"
 import { Row, Col } from "reactstrap"
 import { createStructuredSelector } from "reselect"
 import WithSpinner from "../../custom/with spinner/WithSpinner.component"
-import { AbilityContext } from "../../utility/context/Can"
 import ImagesCarousel from "./components/images carousel/ImagesCarousel.component"
 import AnnouncementsSlider from "./components/announcements slider/AnnouncementsSlider.component"
 import {
@@ -36,12 +35,12 @@ const DashboardPage = ({
   getAllAnnouncementsForLecturerIsLoading,
   getAllAnnouncementsForLecturerErrorMessage,
 }) => {
-  const ability = useContext(AbilityContext)
-
   useEffect(() => {
+    getCarouselImages()
     if (currentUserRole === "lecturer") {
       getCurrentUserChats()
       getCurrentUserConsultations()
+      getAllAnnouncementsForLecturer()
     }
   }, [])
   return (
@@ -51,7 +50,6 @@ const DashboardPage = ({
           card={true}
           errorMessage={getCarouselImagesErrorMessage}
           isLoading={getCarouselImagesIsLoading}
-          toBeDispatchedUseEffect={getCarouselImages}
           toBeDispatchedTryAgain={getCarouselImages}
         />
       </Col>
@@ -61,7 +59,6 @@ const DashboardPage = ({
             card={true}
             errorMessage={getAllAnnouncementsForLecturerErrorMessage}
             isLoading={getAllAnnouncementsForLecturerIsLoading}
-            toBeDispatchedUseEffect={getAllAnnouncementsForLecturer}
             toBeDispatchedTryAgain={getAllAnnouncementsForLecturer}
           />
         </Col>

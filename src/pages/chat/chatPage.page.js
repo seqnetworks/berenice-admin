@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import { Card, CardBody, Button } from "reactstrap"
@@ -37,6 +37,14 @@ const ChatPage = ({
 }) => {
   const intl = useIntl()
 
+  useEffect(() => {
+    if(currentUserRole === "lecturer") {
+      toBesDispatchedForLecturer()
+    } else if(selectedUserUuid && (selectedUserRole === "student" || selectedUserRole === "lecturer")) {
+      getChatsOfUser({ userId: selectedUserUuid })
+    }
+  }, []);
+
   const toBesDispatchedForLecturer = () => {
     getChatsOfUser({})
     getStudents()
@@ -46,7 +54,6 @@ const ChatPage = ({
     <ChatWithSpinner
       errorMessage={getChatsOfUserErrorMessage || getStudentsErrorMessage}
       isLoading={getChatsOfUserIsLoading || getStudentsIsLoading}
-      toBeDispatchedUseEffect={toBesDispatchedForLecturer}
       toBeDispatchedTryAgain={toBesDispatchedForLecturer}
       card={true}
     />
@@ -55,8 +62,6 @@ const ChatPage = ({
     <ChatWithSpinner
       errorMessage={getChatsOfUserErrorMessage}
       isLoading={getChatsOfUserIsLoading}
-      toBeDispatchedUseEffect={getChatsOfUser}
-      toBeDispatchedPropsUseEffect={{ userId: selectedUserUuid }}
       toBeDispatchedTryAgain={getChatsOfUser}
       toBeDispatchedPropsTryAgain={{ userId: selectedUserUuid }}
       card={true}

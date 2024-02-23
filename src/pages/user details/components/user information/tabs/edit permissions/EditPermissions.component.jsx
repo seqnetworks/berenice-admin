@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import "lodash"
+import _ from 'lodash';
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import { useIntl } from "react-intl"

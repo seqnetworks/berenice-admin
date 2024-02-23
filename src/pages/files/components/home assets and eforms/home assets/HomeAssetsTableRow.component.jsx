@@ -26,6 +26,8 @@ const HomeAssetsTableRow = ({
   const intl = useIntl()
   const ability = useContext(AbilityContext)
 
+  const renderEmpty = () => <h1 style={{ textAlign: "center" }}>-</h1>
+
   const deleteHomeAssetDialogAttributes = {
     button: {
       color: "primary",

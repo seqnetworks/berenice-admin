@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import * as Yup from "yup"
 import { connect } from "react-redux"
 import { useIntl } from "react-intl"
 import { createStructuredSelector } from "reselect"
@@ -21,18 +22,12 @@ import { FormattedMessage } from "react-intl"
 import { useFormik } from "formik"
 import { Lock, Eye, EyeOff } from "react-feather"
 import classnames from "classnames"
-import changingUserPasswordValidationSchema from "../../../../../custom/validation schemas/changing user password/ChangingUserPasswordValidationSchema.component"
 import "../../../../../custom/styles/animations.styles.scss"
 
-const ChangePassword = ({
-  changingUserPasswordValidationSchema,
-  activeTab,
-  changePassword,
-  changePasswordIsLoading,
-  setPassword,
-}) => {
+const ChangePassword = (props) => {
   const intl = useIntl()
 
+  const [password, setPassword] = useState("")
   const [visible, setVisible] = useState({
     old_password: false,
     new_password: false,
@@ -45,6 +40,41 @@ const ChangePassword = ({
 
   const renderIcons = field =>
     visible[field] === true ? <Eye size={14} /> : <EyeOff size={14} />
+
+  const changingUserPasswordValidationSchema = Yup.object().shape({
+    old_password: Yup.string()
+      .required(intl.formatMessage({ id: "THIS.FIELD.IS.REQUIRED" }))
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+        intl.formatMessage({
+          id:
+            "THE.PASSWORD.MUST.CONTAIN.AT.LEAST.EIGHT.CHARACTERS,.ONE.UPPERCASE.LETTER,.ONE.LOWERCASE.LETTER.AND.ONE.NUMBER",
+        })
+      ),
+    new_password: Yup.string()
+      .required(intl.formatMessage({ id: "THIS.FIELD.IS.REQUIRED" }))
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+        intl.formatMessage({
+          id:
+            "THE.PASSWORD.MUST.CONTAIN.AT.LEAST.EIGHT.CHARACTERS,.ONE.UPPERCASE.LETTER,.ONE.LOWERCASE.LETTER.AND.ONE.NUMBER",
+        })
+      ),
+    confirm_new_password: Yup.string()
+      .required(intl.formatMessage({ id: "THIS.FIELD.IS.REQUIRED" }))
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+        intl.formatMessage({
+          id:
+            "THE.PASSWORD.MUST.CONTAIN.AT.LEAST.EIGHT.CHARACTERS,.ONE.UPPERCASE.LETTER,.ONE.LOWERCASE.LETTER.AND.ONE.NUMBER",
+        })
+      )
+      .test(
+        "match",
+        intl.formatMessage({ id: "PASSWORDS.MUST.MATCH" }),
+        value => (value ? value === password : null)
+      ),
+  })
 
   const changingPasswordFormik = useFormik({
     validationSchema: changingUserPasswordValidationSchema,
@@ -72,11 +102,11 @@ const ChangePassword = ({
         newPassword: values.new_password,
         confirmPassword: values.confirm_new_password,
       }
-      changePassword(requestBody, messages, () => setResetFrom(!resetForm))
+      props.changePassword(requestBody, messages, () => setResetFrom(!resetForm))
     },
   })
 
-  useEffect(() => changingPasswordFormik.resetForm(), [activeTab, resetForm])
+  useEffect(() => changingPasswordFormik.resetForm(), [props.activeTab, resetForm])
 
   return (
     <Form onSubmit={changingPasswordFormik.handleSubmit}>
@@ -247,14 +277,14 @@ const ChangePassword = ({
             disabled={
               !(
                 changingPasswordFormik.dirty && changingPasswordFormik.isValid
-              ) || changePasswordIsLoading
+              ) || props.changePasswordIsLoading
             }
             block
             className="mt-75"
             type="submit"
             color="primary"
           >
-            {changePasswordIsLoading ? (
+            {props.changePasswordIsLoading ? (
               <Spinner
                 as="span"
                 animation="border"
@@ -283,4 +313,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(changingUserPasswordValidationSchema(ChangePassword))
+)(ChangePassword)

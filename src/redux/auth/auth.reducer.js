@@ -170,7 +170,7 @@ const authReducer = (state = INITIAL_STATE, action) => {
       }
     case authTypes.LOG_OUT: {
       window.localStorage.clear()
-      location.reload()
+      window.location.reload()
       return INITIAL_STATE
     }
     case authTypes.UPDATE_TOKEN:

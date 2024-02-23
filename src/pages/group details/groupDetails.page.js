@@ -28,6 +28,10 @@ const GroupDetails = ({
   const location = useLocation()
   const intl = useIntl()
 
+  useEffect(() => {
+    getGroupUsers(uuid)
+  }, []);
+
   let uuid = ""
   if (location.state) {
     if (location.state.uuid) uuid = location.state.uuid
@@ -45,9 +49,7 @@ const GroupDetails = ({
           <Col xs={12}>
             <Card>
               <GroupUsersTableWithSpinner
-                toBeDispatchedUseEffect={getGroupUsers}
                 toBeDispatchedTryAgain={getGroupUsers}
-                toBeDispatchedPropsUseEffect={uuid}
                 toBeDispatchedPropsTryAgain={uuid}
                 isLoading={getGroupUsersIsLoading}
                 errorMessage={getGroupUsersErrorMessage}

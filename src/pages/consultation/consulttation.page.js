@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import { getCurrentUserConsultationsAsync } from "../../redux/index.actions"
@@ -18,13 +18,15 @@ const ConsultationPage = ({
   getCurrentUserConsultationsErrorMessage,
   getCurrentUserConsultationsIsLoading,
 }) => {
+  useEffect(() => {
+    getCurrentUserConsultations()
+  }, []);
   return (
     <ConsultationCalendarWithSpinner
       card={true}
       errorMessage={getCurrentUserConsultationsErrorMessage}
       isLoading={getCurrentUserConsultationsIsLoading}
       toBeDispatchedTryAgain={getCurrentUserConsultations}
-      toBeDispatchedUseEffect={getCurrentUserConsultations}
     />
   )
 }

@@ -26,6 +26,8 @@ const EFormsTableRow = ({
   const intl = useIntl()
   const ability = useContext(AbilityContext)
 
+  const renderEmpty = () => <h1 style={{ textAlign: "center" }}>-</h1>
+  
   const deleteEFormDialogAttributes = {
     button: {
       color: "primary",

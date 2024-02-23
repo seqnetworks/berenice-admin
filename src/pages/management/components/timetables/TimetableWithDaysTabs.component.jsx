@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import { useIntl } from "react-intl"
@@ -34,6 +34,14 @@ const TimetableWithDaysTabs = ({
   getAllIntakesErrorMessage,
   getAllIntakesInCourseIsLoading,
 }) => {
+  useEffect(() => {
+    if (!classes) {
+      getAllClasses()
+      getSubjects()
+      getAllIntakes()
+    }
+  }, []);
+
   const [activeTab, setActiveTab] = useState(0)
 
   const intl = useIntl()
@@ -59,14 +67,6 @@ const TimetableWithDaysTabs = ({
         },
         content: (
           <ClassesTableWithSpinner
-            toBeDispatchedUseEffect={classes => {
-              if (!classes) {
-                getAllClasses()
-                getSubjects()
-                getAllIntakes()
-              }
-            }}
-            toBeDispatchedPropsUseEffect={classes}
             {...withSpinnerComponentAttributes}
           />
         ),

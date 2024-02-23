@@ -441,7 +441,8 @@ export const deleteAssessmentFailure = errorMessage => ({
 
 export const deleteAssessmentAsync = (
   assessmentUuid,
-  classUuid
+  classUuid,
+  messages
 ) => async dispatch => {
   try {
     dispatch(deleteAssessmentStart())

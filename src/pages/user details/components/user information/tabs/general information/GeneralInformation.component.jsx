@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react"
+import * as Yup from "yup"
 import { useFormik } from "formik"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
@@ -46,7 +47,6 @@ import { selectArray } from "../../../../../../utility/custom/arabicCountries"
 import { studentTypesArray } from "../../../../../../utility/custom/StudentArrays"
 import { AbilityContext } from "../../../../../../utility/context/Can"
 import WithSpinner from "../../../../../../custom/with spinner/WithSpinner.component"
-import UpdatingUserDetailsValidationSchema from "../../../../../../custom/validation schemas/updating user details/UpdatingUserDetailsValidationSchema.component"
 import {
   updateUserDetailsAsync,
   getStudentsOfGuardianAsync,
@@ -72,38 +72,74 @@ const LinkGuardiansToSpecificStudentWithSpinner = WithSpinner(
 )
 //--------------------------------------------------------
 
-const GeneralInformation = ({
-  user,
-  currentUserRole,
-  paramAndType,
-  setTabsDisabled,
-  updateUserDetails,
-  updatingUserDetailsValidationSchema,
-  updateUserDetailsIsLoading,
-  getStudentsOfGuardian,
-  getStudentsOfGuardianErrorMessage,
-  getStudentsOfGuardianIsLoading,
-  getGuardiansOfStudent,
-  getGuardiansOfStudentErrorMessage,
-  getGuardiansOfStudentIsLoading,
-}) => {
+const GeneralInformation = (props) => {
   const intl = useIntl()
   const ability = useContext(AbilityContext)
+
+  useEffect(() => {
+    if (props.user.role === "guardian" &&
+      ability.can("manage", "guardian_sutdents-GET")) {
+      props.getStudentsOfGuardian(props.user.uuid)
+    } else if (props.user.role === "student" &&
+      ability.can("manage", "student_guardians-GET")) {
+      props.getGuardiansOfStudent(props.user.uuid)
+    }
+  }, []);
+
+  const updatingUserDetailsValidationSchema = Yup.object().shape({
+    username: Yup.string()
+      .required(intl.formatMessage({ id: "THIS.FIELD.IS.REQUIRED" }))
+      .test(
+        "len",
+        intl.formatMessage({ id: "USERNAME.SHOULD.BE.MINIMUM.4.CHARACTERS" }),
+        value => (value ? value.length > 3 : null)
+      ),
+    fullName: Yup.string().required(
+      intl.formatMessage({ id: "THIS.FIELD.IS.REQUIRED" })
+    ),
+    fullNameArabic: Yup.string().required(
+      intl.formatMessage({ id: "THIS.FIELD.IS.REQUIRED" })
+    ),
+    phoneNumber: Yup.string()
+      .required(intl.formatMessage({ id: "THIS.FIELD.IS.REQUIRED" }))
+      .matches(
+        /^[0-9]*$/,
+        intl.formatMessage({ id: "ONLY.NUMBERS.ARE.VALID.IN.THIS.FIELD" })
+      )
+      .test(
+        "len",
+        intl.formatMessage({ id: "ONLY.9.DIGITS.ARE.VALID" }),
+        value => (value ? value.length === 9 : null)
+      )
+      .test(
+        "zero",
+        intl.formatMessage({
+          id: "THE.PHONE.NUMBER.SHOULD.NOT.START.WITH.ZERO",
+        }),
+        value => (value ? value[0] !== "0" : null)
+      ),
+    email: Yup.string().email(intl.formatMessage({ id: "WRONG.EMAIL.FORMAT" })),
+    nationality: Yup.string().required(
+      intl.formatMessage({ id: "THIS.FIELD.IS.REQUIRED" })
+    ),
+    gender: Yup.string(),
+    birthdate: Yup.string(),
+  })
 
   const userTypeHelper = {
     student: thisUser => {
       return {
-        studentId: user.uuid,
-        type: user.type,
+        studentId: props.user.uuid,
+        type: props.user.type,
         ...thisUser,
       }
     },
     staff: thisUser => {
-      return { staffId: user.uuid, ...thisUser }
+      return { staffId: props.user.uuid, ...thisUser }
     },
     lecturer: thisUser => {
       return {
-        lecturerId: paramAndType.lecturer ? user.userId : user.uuid,
+        lecturerId: props.paramAndType.lecturer ? props.user.userId : props.user.uuid,
         ...thisUser,
       }
     },
@@ -119,38 +155,38 @@ const GeneralInformation = ({
     guardian: 10,
   }
 
-  let thisUser = paramAndType.lecturer
+  let thisUser = props.paramAndType.lecturer
     ? {
-        username: user.username,
-        fullName: user.fullName,
-        fullNameArabic: user.fullNameArabic,
-        phoneNumber: user.phoneNumber,
-        gender: user.gender,
-        email: user.email,
-        birthdate: user.birthdate,
-        nationality: user.nationality,
-        nationalIdentity: user.nationalIdentity,
-      }
+      username: props.user.username,
+      fullName: props.user.fullName,
+      fullNameArabic: props.user.fullNameArabic,
+      phoneNumber: props.user.phoneNumber,
+      gender: props.user.gender,
+      email: props.user.email,
+      birthdate: props.user.birthdate,
+      nationality: props.user.nationality,
+      nationalIdentity: props.user.nationalIdentity,
+    }
     : {
-        username: user.username,
-        fullName: user.fullName,
-        fullNameArabic: user.fullNameArabic,
-        phoneNumber: user.phoneNumber,
-        gender: user.gender,
-        email: user.email,
-        birthdate: user.birthdate,
-        nationality: user.nationality,
-        nationalIdentity: user.nationalIdentity,
-        status: user.status,
-        uuid: user.userUuid,
-        author: user.author,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-      }
+      username: props.user.username,
+      fullName: props.user.fullName,
+      fullNameArabic: props.user.fullNameArabic,
+      phoneNumber: props.user.phoneNumber,
+      gender: props.user.gender,
+      email: props.user.email,
+      birthdate: props.user.birthdate,
+      nationality: props.user.nationality,
+      nationalIdentity: props.user.nationalIdentity,
+      status: props.user.status,
+      uuid: props.user.userUuid,
+      author: props.user.author,
+      createdAt: props.user.createdAt,
+      updatedAt: props.user.updatedAt,
+    }
 
-  if (paramAndType.type === "admin") thisUser["uuid"] = user.uuid
+  if (props.paramAndType.type === "admin") thisUser["uuid"] = props.user.uuid
 
-  thisUser = userTypeHelper[paramAndType.type](thisUser)
+  thisUser = userTypeHelper[props.paramAndType.type](thisUser)
 
   const updatingUserDetailsFormik = useFormik({
     validationSchema: updatingUserDetailsValidationSchema,
@@ -173,7 +209,7 @@ const GeneralInformation = ({
           }),
         },
       }
-      const uuid = user.userUuid
+      const uuid = props.user.userUuid
       const requestBody = {
         fullName: values.fullName,
         fullNameArabic: values.fullNameArabic,
@@ -183,14 +219,14 @@ const GeneralInformation = ({
         nationality: values.nationality,
         phoneNumber: values.phoneNumber,
       }
-      updateUserDetails(requestBody, uuid, paramAndType, messages)
+      props.updateUserDetails(requestBody, uuid, props.paramAndType, messages)
     },
   })
 
   const [isEditing, setIsEditing] = useState(false)
 
   useEffect(() => {
-    setTabsDisabled(isEditing)
+    props.setTabsDisabled(isEditing)
   }, [isEditing])
 
   const fieldLabel = {
@@ -275,7 +311,7 @@ const GeneralInformation = ({
               <FormattedMessage id="GENERAL" />
             </h4>
           </div>
-          {currentUserRole === "lecturer" ? (
+          {props.currentUserRole === "lecturer" ? (
             <></>
           ) : ability.can("manage", "user-PUT") ? (
             <div>
@@ -293,12 +329,12 @@ const GeneralInformation = ({
                       !(
                         updatingUserDetailsFormik.dirty &&
                         updatingUserDetailsFormik.isValid
-                      ) || updateUserDetailsIsLoading
+                      ) || props.updateUserDetailsIsLoading
                     }
                     type="submit"
                     color="success"
                   >
-                    {updateUserDetailsIsLoading ? (
+                    {props.updateUserDetailsIsLoading ? (
                       <Spinner
                         as="span"
                         animation="border"
@@ -311,9 +347,9 @@ const GeneralInformation = ({
                   </Button>
                   <Button
                     className="p-50 input-custom-animation-2"
-                    disabled={updateUserDetailsIsLoading}
+                    disabled={props.updateUserDetailsIsLoading}
                     onClick={() => {
-                      setTabsDisabled(false)
+                      props.setTabsDisabled(false)
                       setIsEditing(false)
                       updatingUserDetailsFormik.resetForm()
                     }}
@@ -326,7 +362,7 @@ const GeneralInformation = ({
                 <Button
                   className="p-50 input-custom-animation-2"
                   onClick={() => {
-                    setTabsDisabled(true)
+                    props.setTabsDisabled(true)
                     setIsEditing(true)
                   }}
                   color="primary"
@@ -342,18 +378,18 @@ const GeneralInformation = ({
 
         {Object.keys(thisUser).map((key, index) => (
           <>
-            {index === inevitableBreakup[paramAndType.type] ? (
+            {index === inevitableBreakup[props.paramAndType.type] ? (
               <>
-                {user.role === "staff" && ability.can("manage", "staff-PUT") ? (
+                {props.user.role === "staff" && ability.can("manage", "staff-PUT") ? (
                   <ChangeStaffType
-                    staffId={user.uuid}
-                    staffType={user.staffType}
+                    staffId={props.user.uuid}
+                    staffType={props.user.staffType}
                   />
-                ) : user.role === "lecturer" &&
+                ) : props.user.role === "lecturer" &&
                   ability.can("manage", "lecturer-PUT") ? (
                   <EditLecturerPosition
-                    lecturerUuid={user.uuid}
-                    lecturerPosition={user.lecturerPosition}
+                    lecturerUuid={props.user.uuid}
+                    lecturerPosition={props.user.lecturerPosition}
                   />
                 ) : null}
                 <Col
@@ -388,15 +424,15 @@ const GeneralInformation = ({
                   <Input
                     readOnly={
                       isEditing &&
-                      key !== "username" &&
-                      key !== "author" &&
-                      key !== "uuid" &&
-                      key !== "studentId" &&
-                      key !== "guardianUuid" &&
-                      key !== "staffId" &&
-                      key !== "updatedAt" &&
-                      key !== "createdAt" &&
-                      key !== "status"
+                        key !== "username" &&
+                        key !== "author" &&
+                        key !== "uuid" &&
+                        key !== "studentId" &&
+                        key !== "guardianUuid" &&
+                        key !== "staffId" &&
+                        key !== "updatedAt" &&
+                        key !== "createdAt" &&
+                        key !== "status"
                         ? false
                         : true
                     }
@@ -418,15 +454,15 @@ const GeneralInformation = ({
                     value={
                       key === "status"
                         ? status[
-                            updatingUserDetailsFormik.getFieldProps(key).value
-                          ]
+                        updatingUserDetailsFormik.getFieldProps(key).value
+                        ]
                         : updatingUserDetailsFormik.getFieldProps(key).value
                     }
                   >
                     {fieldType[key] === "select"
                       ? fieldOptions[key].map(option => (
-                          <option value={option.value}>{option.title}</option>
-                        ))
+                        <option value={option.value}>{option.title}</option>
+                      ))
                       : null}
                   </Input>
                 </InputGroup>
@@ -444,27 +480,23 @@ const GeneralInformation = ({
             </Col>
           </>
         ))}
-        {user.role === "guardian" &&
-        ability.can("manage", "guardian_sutdents-GET") ? (
+        {props.user.role === "guardian" &&
+          ability.can("manage", "guardian_sutdents-GET") ? (
           <LinkStudentsToSpecificGuardianWithSpinner
-            guardianUuid={user.uuid}
-            toBeDispatchedUseEffect={getStudentsOfGuardian}
-            toBeDispatchedTryAgain={getStudentsOfGuardian}
-            toBeDispatchedPropsTryAgain={user.uuid}
-            toBeDispatchedPropsUseEffect={user.uuid}
-            isLoading={getStudentsOfGuardianIsLoading}
-            errorMessage={getStudentsOfGuardianErrorMessage}
+            guardianUuid={props.user.uuid}
+            toBeDispatchedTryAgain={props.getStudentsOfGuardian}
+            toBeDispatchedPropsTryAgain={props.user.uuid}
+            isLoading={props.getStudentsOfGuardianIsLoading}
+            errorMessage={props.getStudentsOfGuardianErrorMessage}
           />
-        ) : user.role === "student" &&
+        ) : props.user.role === "student" &&
           ability.can("manage", "student_guardians-GET") ? (
           <LinkGuardiansToSpecificStudentWithSpinner
-            studentId={user.uuid}
-            toBeDispatchedUseEffect={getGuardiansOfStudent}
-            toBeDispatchedTryAgain={getGuardiansOfStudent}
-            toBeDispatchedPropsTryAgain={user.uuid}
-            toBeDispatchedPropsUseEffect={user.uuid}
-            isLoading={getGuardiansOfStudentIsLoading}
-            errorMessage={getGuardiansOfStudentErrorMessage}
+            studentId={props.user.uuid}
+            toBeDispatchedTryAgain={props.getGuardiansOfStudent}
+            toBeDispatchedPropsTryAgain={props.user.uuid}
+            isLoading={props.getGuardiansOfStudentIsLoading}
+            errorMessage={props.getGuardiansOfStudentErrorMessage}
           />
         ) : null}
       </Row>
@@ -494,4 +526,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(UpdatingUserDetailsValidationSchema(GeneralInformation))
+)(GeneralInformation)

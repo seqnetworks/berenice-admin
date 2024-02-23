@@ -7,16 +7,14 @@ const WithSpinner = WrappedComponent => ({
   noCardBody,
   isLoading,
   errorMessage,
-  toBeDispatchedUseEffect,
-  toBeDispatchedPropsUseEffect,
   toBeDispatchedTryAgain,
   toBeDispatchedPropsTryAgain,
   ...otherProps
 }) => {
-  useEffect(() => {
-    if (toBeDispatchedUseEffect)
-      toBeDispatchedUseEffect(toBeDispatchedPropsUseEffect)
-  }, [])
+  // useEffect(() => {
+  //   if (toBeDispatchedUseEffect)
+  //     toBeDispatchedUseEffect(toBeDispatchedPropsUseEffect)
+  // }, [])
 
   return isLoading ? (
     card ? (

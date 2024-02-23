@@ -21,6 +21,7 @@ import {
   InputGroupText,
   Button,
   Spinner,
+  Row,
 } from "reactstrap";
 import "@styles/base/pages/page-auth.scss";
 import { logInAsync } from "../../redux/index.actions";

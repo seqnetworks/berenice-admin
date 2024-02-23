@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import { Card, CardBody } from "reactstrap"
@@ -41,14 +41,18 @@ const AnnouncementsPage = ({
 }) => {
   const intl = useIntl()
 
+  useEffect(() => {
+    if (currentUserRole === "lecturer") {
+      getAnnouncementsOfSingalUser(currentUserUuid)
+      getCurrentLecturerOngoingSubjects()
+    } else if(selectedUserUuid && (selectedUserRole === "staff" || selectedUserRole === "lecturer")) {
+      getAnnouncementsOfSingalUser(selectedUserUserUuid)
+    }
+  }, [])
+
   return currentUserRole === "lecturer" ? (
     <UserAnnouncementsTableWithSpinner
       card={true}
-      toBeDispatchedUseEffect={currentUserUuid => {
-        getAnnouncementsOfSingalUser(currentUserUuid)
-        getCurrentLecturerOngoingSubjects()
-      }}
-      toBeDispatchedPropsUseEffect={currentUserUuid}
       toBeDispatchedTryAgain={currentUserUuid => {
         getAnnouncementsOfSingalUser(currentUserUuid)
         getCurrentLecturerOngoingSubjects()
@@ -70,8 +74,6 @@ const AnnouncementsPage = ({
       <BackButton messageId="BACK.TO.PROFILE" />
       <UserAnnouncementsTableWithSpinner
         card={true}
-        toBeDispatchedUseEffect={getAnnouncementsOfSingalUser}
-        toBeDispatchedPropsUseEffect={selectedUserUserUuid}
         toBeDispatchedTryAgain={getAnnouncementsOfSingalUser}
         toBeDispatchedPropsTryAgain={selectedUserUserUuid}
         isLoading={getAnnouncementsOfSingalUserIsLoading}

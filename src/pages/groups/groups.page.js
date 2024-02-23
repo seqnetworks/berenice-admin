@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Row, Col, Card } from "reactstrap"
 import GroupsTable from "./groups table/GroupsTable.component"
 import WithSpinner from "../../custom/with spinner/WithSpinner.component"
@@ -22,6 +22,10 @@ const GroupsPage = ({
 	getAllGRoupsErrorMessage,
 	groups
 }) => {
+	useEffect(() => {
+		getAllGroupsUseEffect(groups)
+	}, []);
+
 	return (
 		<Row>
 			<Col xs={12}>
@@ -29,8 +33,6 @@ const GroupsPage = ({
 					<GroupsTableWithSpinner
 						isLoading={getAllGroupsIsLoading}
 						errorMessage={getAllGRoupsErrorMessage}
-						toBeDispatchedUseEffect={getAllGroupsUseEffect}
-						toBeDispatchedPropsUseEffect={groups}
 						toBeDispatchedTryAgain={getAllGroupsTryAgain}
 						groups={groups}
 					/>

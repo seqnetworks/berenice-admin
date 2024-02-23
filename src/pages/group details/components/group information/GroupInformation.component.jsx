@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import { useIntl } from "react-intl"
@@ -31,6 +31,10 @@ const GroupInformation = ({
 
   const intl = useIntl()
 
+  useEffect(() => {
+    getGroup(uuid)
+  }, []);
+
   const attributes = {
     cards: [
       {
@@ -40,9 +44,7 @@ const GroupInformation = ({
         },
         content: (
           <GroupGeneralInformationWithSpinner
-            toBeDispatchedUseEffect={getGroup}
             toBeDispatchedTryAgain={getGroup}
-            toBeDispatchedPropsUseEffect={uuid}
             toBeDispatchedPropsTryAgain={uuid}
             isLoading={getGroupIsLoading}
             errorMessage={getGroupErrorMessage}
@@ -57,9 +59,7 @@ const GroupInformation = ({
         },
         content: (
           <GroupActionsWithSpinner
-            toBeDispatchedUseEffect={getGroup}
             toBeDispatchedTryAgain={getGroup}
-            toBeDispatchedPropsUseEffect={uuid}
             toBeDispatchedPropsTryAgain={uuid}
             isLoading={getGroupIsLoading}
             errorMessage={getGroupErrorMessage}
