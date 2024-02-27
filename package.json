@@ -115,7 +115,7 @@
     "yup": "^0.32.9"
   },
   "scripts": {
-    "start": "react-scripts start --openssl-legacy-provider",
+    "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
