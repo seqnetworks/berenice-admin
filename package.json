@@ -98,6 +98,7 @@
     "redux-thunk": "^2.3.0",
     "relative-time-format": "^1.0.6",
     "reselect": "^4.0.0",
+    "sass": "^1.71.1",
     "scheduler-react": "^2.0.20",
     "screenfull": "5.0.2",
     "sortablejs": "1.12.0",
